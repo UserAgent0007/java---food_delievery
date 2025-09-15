@@ -35,7 +35,7 @@ public class App {
 
         MenuItem[] items = new MenuItem[] {new MenuItem("borsh", 120, "hot dish"), new MenuItem("potato", 500, "hot dish")};
 
-        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 15));
+        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 30));
         Order order2 = Order.createOrder(customer1, items, LocalDate.of(2029, 9, 15));
 
         if (order1.equals(order2)){
