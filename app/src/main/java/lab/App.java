@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lab.models.*;
+import lab.utils.CuisineType;
+import lab.utils.OrderStatus;
 
 public class App {
     public String getGreeting() {
@@ -14,55 +16,28 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-
-        Restaurant rest1 = new Restaurant(null, "sdh", "askhdkjasdh");
-        Restaurant rest2 = new Restaurant(null, "sdh", "askhdkjasdh");
-
-        if (rest1.equals(rest2)){
-
-            System.out.println("equal\n");
-        }
-
-        System.out.println(rest1.toString());
+        Restaurant rest1 = new Restaurant("sfsfnsdnf", CuisineType.AMERICAN, "somewhere");
+        System.out.println(rest1);
 
         System.out.println("\n");
-
-        Customer customer1 = new Customer("Asjdaskjdh", "Dgjdjf", "shfkjsfhkjshf");
-
-        System.out.println(customer1);
-        // System.out.println("\n");
+        System.out.println(rest1.showCuisine());
+        System.out.println("\n");
 
         MenuItem[] items = new MenuItem[] {new MenuItem("borsh", 120, "hot dish"), new MenuItem("potato", 500, "hot dish")};
+        Customer customer1 = new Customer("Asjdaskjdh", "Dgjdjf", "shfkjsfhkjshf");
+        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 30), OrderStatus.CONFIRMED);
+        System.out.println(order1);
 
-        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 30));
-        Order order2 = Order.createOrder(customer1, items, LocalDate.of(2029, 9, 15));
-
-        if (order1.equals(order2)){
-
-            System.out.println("equal\n");
-        }
-
-        if (items[0].equals(items[1])){
-            System.out.println("equal");
-        }
-
-        System.out.println(order2.toString());
+        System.out.println("\n");
+        System.out.println(order1.checkStatus());
 
         System.out.println("\n");
 
-        System.out.println(items[0].toString());
+        CustomerRecord customer2 = new CustomerRecord("Kiril", "Kravtsov", "asjdasdj");
+        DeliveryRecord deliver1 = new DeliveryRecord(order1, "Avovus Bobus", LocalDateTime.of(2026, 9, 15, 20, 15));
 
-        Delivery delivery1 = Delivery.createDelivery(order1, "Dshdkjasdhkj Djafkjsdfh", LocalDateTime.of(2025, 9, 15, 20, 15));
-        Delivery delivery2 = Delivery.createDelivery(order1, "Dshdkjasdhkj Djafkjsdfh", LocalDateTime.of(2025, 9, 15, 20, 15));
-
-        System.out.println("==================================\n");
-        
-        System.out.println(delivery1);
-        System.out.println(delivery2);
-
-        if (delivery1.equals(delivery2)){
-            System.out.println("equal");
-        }
+        System.out.println(customer2);
+        System.out.println("\n");
+        System.out.println(deliver1);
     }
 }

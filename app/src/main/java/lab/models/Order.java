@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import lab.utils.CustomerUtils;
+import lab.utils.OrderStatus;
 import lab.utils.OrderUtils;
 
 public class Order {
@@ -15,13 +16,35 @@ public class Order {
     private int numberItems;
     private LocalDate orderDate;
 
+    private OrderStatus status;
+
     public Order(){}
 
-    public Order(Customer customer, MenuItem[] items, LocalDate orderDate){
+    public Order(Customer customer, MenuItem[] items, LocalDate orderDate, OrderStatus status){
 
         setCustomer(customer);
         setItems(items);
         setOrderDate(orderDate);
+        setOrderStatus(status);
+    }
+
+    public String checkStatus(){
+        switch(this.status){
+            case PENDING: return "Очікується";
+            case CONFIRMED: return "Підтверджено";
+            case PREPARING: return "Готується";
+            case DELIVERED: return "Доставлено";
+            case CANCELED: return "Відмінено";
+            default: return "error";
+        }
+    }
+
+    public OrderStatus getOrderStatus(){
+        return status;
+    }
+
+    public void setOrderStatus(OrderStatus status){
+        this.status = status;
     }
 
     public Customer getCustomer (){
@@ -111,13 +134,13 @@ public class Order {
         }
     }
 
-    public static Order createOrder(Customer customer, MenuItem[] items, LocalDate orderDate){
+    public static Order createOrder(Customer customer, MenuItem[] items, LocalDate orderDate, OrderStatus status){
 
         int n = items.length;
 
         if (OrderUtils.validCustomer(customer) && OrderUtils.validItems(items, n) && OrderUtils.validOrderDate(orderDate)){
 
-            return new Order(customer, items, orderDate);
+            return new Order(customer, items, orderDate, status);
         }
 
         else{
@@ -131,7 +154,7 @@ public class Order {
 
         String orderList = OrderUtils.toStringItems(this.items, this.numberItems);
 
-        return "Order:\n" + customer.toString() + "\n" + orderList + "\n" + orderDate.toString();
+        return "Order:\n" + customer.toString() + "\n" + orderList + "\n" + orderDate.toString() + "\n" + status;
     }
 
     @Override

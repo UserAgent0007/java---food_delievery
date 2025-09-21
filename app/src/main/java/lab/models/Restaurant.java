@@ -1,20 +1,34 @@
 package lab.models;
 import java.util.Objects;
 
+import lab.utils.CuisineType;
 import lab.utils.RestaurantUtils;
 
 public class Restaurant {
     private String name;
-    private String cuisine;
+    // private String cuisine;
+    private CuisineType cuisine;
     private String location;
 
     public Restaurant(){}
 
-    public Restaurant(String name, String cuisine, String loacation){
+    public Restaurant(String name, CuisineType cuisine, String loacation){
 
         setCuisine(cuisine);
         setLocation(loacation);
         setName(name);
+    }
+
+    public String showCuisine(){
+
+        switch (this.cuisine){
+            case ITALIAN: return "Італійська";
+            case CHINESE: return "Китайська";
+            case MEXICAN: return "Мексиканська";
+            case AMERICAN: return "Американська";
+            case INDIAN: return "Індійська";
+            default: return "Error";
+        }
     }
 
     public String getName(){
@@ -27,12 +41,12 @@ public class Restaurant {
         this.name = RestaurantUtils.capitalize(name);
     }
 
-    public String getCuisine(){
+    public CuisineType getCuisine(){
 
         return this.cuisine;
     }
 
-    public void setCuisine(String cuisine){
+    public void setCuisine(CuisineType cuisine){
 
         this.cuisine = cuisine;
     }
@@ -55,7 +69,7 @@ public class Restaurant {
         }
     }
 
-    public static Restaurant createRestaurant (String name, String cuisine, String location){
+    public static Restaurant createRestaurant (String name, CuisineType cuisine, String location){
 
         if (RestaurantUtils.validLocation(location)){
 
@@ -71,7 +85,7 @@ public class Restaurant {
     @Override
     public String toString(){
 
-        return "Restaurant:\n" + name + "\n" + location + "\n" + cuisine;
+        return "Restaurant:\n" + name + "\n" + location + "\n" + cuisine.showPriceRange();
     }
 
     @Override
