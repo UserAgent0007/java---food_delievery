@@ -21,14 +21,14 @@ public class Restaurant {
 
     public String showCuisine(){
 
-        switch (this.cuisine){
-            case ITALIAN: return "Італійська";
-            case CHINESE: return "Китайська";
-            case MEXICAN: return "Мексиканська";
-            case AMERICAN: return "Американська";
-            case INDIAN: return "Індійська";
-            default: return "Error";
-        }
+        return switch (this.cuisine){
+            case ITALIAN-> "Італійська";
+            case CHINESE-> "Китайська";
+            case MEXICAN-> "Мексиканська";
+            case AMERICAN-> "Американська";
+            case INDIAN-> "Індійська";
+            default-> "Error";
+        };
     }
 
     public String getName(){
