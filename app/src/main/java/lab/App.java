@@ -3,12 +3,9 @@
  */
 package lab;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import lab.models.*;
-import lab.utils.CuisineType;
-import lab.utils.OrderStatus;
 
 public class App {
     public String getGreeting() {
@@ -16,28 +13,9 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Restaurant rest1 = new Restaurant("sfsfnsdnf", CuisineType.AMERICAN, "somewhere");
-        System.out.println(rest1);
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        List<Customer> customers = Customer.createObjectsFromCSV("src/main/java/lab/models/input.txt");
 
-        System.out.println("\n");
-        System.out.println(rest1.showCuisine());
-        System.out.println("\n");
-
-        MenuItem[] items = new MenuItem[] {new MenuItem("borsh", 120, "hot dish"), new MenuItem("potato", 500, "hot dish")};
-        Customer customer1 = new Customer("Asjdaskjdh", "Dgjdjf", "shfkjsfhkjshf");
-        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 30), OrderStatus.CONFIRMED);
-        System.out.println(order1);
-
-        System.out.println("\n");
-        System.out.println(order1.checkStatus());
-
-        System.out.println("\n");
-
-        CustomerRecord customer2 = new CustomerRecord("Kiril", "Kravtsov", "asjdasdj");
-        DeliveryRecord deliver1 = new DeliveryRecord(order1, "Avovus Bobus", LocalDateTime.of(2026, 9, 15, 20, 15));
-
-        System.out.println(customer2);
-        System.out.println("\n");
-        System.out.println(deliver1);
+        System.out.println(customers);
     }
 }
