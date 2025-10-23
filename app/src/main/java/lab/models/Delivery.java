@@ -7,19 +7,29 @@ import lab.utils.DelieveryUtils;
 
 public class Delivery {
 
+    private int _id;
     private Order order;
     private String deliveryPerson;
     private LocalDateTime deliveryTime;
 
     public Delivery(){}
 
-    public Delivery (Order order1, String deliveryPerson, LocalDateTime deliveryTime){
+    public Delivery (Order order1, String deliveryPerson, LocalDateTime deliveryTime, int id){
 
         order = new Order();
 
+        setId(id);
         setDeliveryPerson(deliveryPerson);
         setDeliveryTime(deliveryTime);
         setOrder(order1);
+    }
+
+    public void setId(int id){
+        this._id = id;
+    }
+
+    public int getId(){
+        return this._id;
     }
 
     public Order getOrder(){
@@ -78,11 +88,11 @@ public class Delivery {
         }
     }
 
-    public static Delivery createDelivery(Order order, String deliveryPerson, LocalDateTime deliveryTime){
+    public static Delivery createDelivery(Order order, String deliveryPerson, LocalDateTime deliveryTime, int id){
 
         if (DelieveryUtils.validDelieveryPerson(deliveryPerson) && DelieveryUtils.validDelieveryTime(deliveryTime) && DelieveryUtils.validOrder(order)){
 
-                return new Delivery(order, deliveryPerson, deliveryTime);
+                return new Delivery(order, deliveryPerson, deliveryTime, id);
         }
 
         else{

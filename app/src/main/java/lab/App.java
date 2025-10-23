@@ -3,9 +3,15 @@
  */
 package lab;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lab.models.*;
+import lab.repository.GenericRepository;
+import lab.repository.IdentityExtractor;
+import lab.utils.CuisineType;
+import lab.utils.OrderStatus;
 
 public class App {
     public String getGreeting() {
@@ -13,9 +19,38 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        List<Customer> customers = Customer.createObjectsFromCSV("src/main/java/lab/models/input.txt");
+        
+        MenuItem item1 = new MenuItem("Pizza", 150, "Food");
+        MenuItem item2 = new MenuItem("Coke", 500, "Drink");
 
-        System.out.println(customers);
+        Customer customer = new Customer("John", "Doe", "ajhdkjash@gmail.com");
+        MenuItem[] items = new MenuItem[]{ item1, item2 };
+        LocalDate orderDate = LocalDate.of(2026, 9, 15);
+        OrderStatus status = OrderStatus.PENDING;
+        Order order = new Order(customer, items, orderDate, status);
+
+        Delivery d1 = new Delivery(order, "Courier Name", LocalDateTime.of(2026, 9, 15, 20, 0), 1);
+        Delivery d2 = new Delivery(order, "Courier Name", LocalDateTime.of(2026, 9, 15, 20, 0), 2);
+
+        IdentityExtractor<Delivery> extractor = (Delivery d) -> String.valueOf(d.getId());
+        GenericRepository<Delivery> repository = new GenericRepository<>(extractor, "Delivery");
+
+        List<Delivery> list1 = List.of(d1, d2);
+        repository.addList(list1);
+    
+
+        System.out.println(repository.size());
+        repository.remove(d1);
+        System.out.println(repository.getAll());
+
+        repository.removeByIdentity(extractor.extractIdentity(d2));
+        System.out.println(repository.getAll());
+
+
+        IdentityExtractor<Restaurant> extractor1 = Restaurant::getName;
+        GenericRepository<Restaurant> repository1 = new GenericRepository<>(extractor1, "Restaurant");
+
+        repository1.add(new Restaurant("abr", CuisineType.AMERICAN, "kklkjd"));
+        repository1.add(new Restaurant("bbra", CuisineType.INDIAN, "flakjf"));
     }
 }
