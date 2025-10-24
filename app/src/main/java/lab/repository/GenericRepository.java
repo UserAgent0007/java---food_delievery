@@ -146,6 +146,27 @@ public class GenericRepository<T> {
         items.clear();
         logger.info("Cleared repository. Removed " + sizeBefore + " " + entityType + " items");
     }
+
+    /**
+     * Використано Comparator.compare
+     * @param asc
+     */
+
+    public void sortByIdentity(boolean asc){
+
+        items.sort(Comparator.comparing(identityExtractor::extractIdentity));
+        if (!asc){
+            Collections.reverse(items);
+            
+            logger.info("Sorted " + entityType +" by identity in descending order");
+        }
+
+        else{
+            logger.info("Sorted " + entityType +" by identity in ascending order");
+        }
+        
+    }
+
     List<T> getItemsForTesting() {
         return items;
     }

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lab.models.*;
+import lab.repository.CustomerRepository;
+import lab.repository.DeliveryRepository;
 import lab.repository.GenericRepository;
 import lab.repository.IdentityExtractor;
 import lab.utils.CuisineType;
@@ -24,33 +26,34 @@ public class App {
         MenuItem item2 = new MenuItem("Coke", 500, "Drink");
 
         Customer customer = new Customer("John", "Doe", "ajhdkjash@gmail.com");
+        Customer customer2 = new Customer("Boris", "Doe", "ajhdkjash@gmail.com");
         MenuItem[] items = new MenuItem[]{ item1, item2 };
         LocalDate orderDate = LocalDate.of(2026, 9, 15);
         OrderStatus status = OrderStatus.PENDING;
         Order order = new Order(customer, items, orderDate, status);
 
-        Delivery d1 = new Delivery(order, "Courier Name", LocalDateTime.of(2026, 9, 15, 20, 0), 1);
-        Delivery d2 = new Delivery(order, "Courier Name", LocalDateTime.of(2026, 9, 15, 20, 0), 2);
+        Delivery d1 = new Delivery(order, "Courier Name", LocalDateTime.of(2026, 9, 15, 20, 0), 3);
+        Delivery d2 = new Delivery(order, "Courier Name", LocalDateTime.of(2025, 12, 15, 20, 0), 2);
 
-        IdentityExtractor<Delivery> extractor = (Delivery d) -> String.valueOf(d.getId());
-        GenericRepository<Delivery> repository = new GenericRepository<>(extractor, "Delivery");
+        DeliveryRepository repository = new DeliveryRepository();
 
         List<Delivery> list1 = List.of(d1, d2);
         repository.addList(list1);
     
+        // repository.sortByIdentity(true); 
 
-        System.out.println(repository.size());
-        repository.remove(d1);
-        System.out.println(repository.getAll());
+        // System.out.println(repository.getAll());
 
-        repository.removeByIdentity(extractor.extractIdentity(d2));
-        System.out.println(repository.getAll());
+        List<Delivery> list1_sorted = repository.sortRepository();
+        System.out.println(list1_sorted);
 
+        // =================
 
-        IdentityExtractor<Restaurant> extractor1 = Restaurant::getName;
-        GenericRepository<Restaurant> repository1 = new GenericRepository<>(extractor1, "Restaurant");
+        CustomerRepository custRep = new CustomerRepository();
+        custRep.add(customer);
+        custRep.add(customer2);
 
-        repository1.add(new Restaurant("abr", CuisineType.AMERICAN, "kklkjd"));
-        repository1.add(new Restaurant("bbra", CuisineType.INDIAN, "flakjf"));
+        List<Customer> resCust = custRep.sortedRepository();
+        System.out.println(resCust);
     }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lab.parser.CustomerFileParser;
 
-public class Customer{
+public class Customer implements Comparable<Customer>{
     
     private static final Logger logger = LoggerFactory.getLogger(Customer.class);
 
@@ -161,5 +161,12 @@ public class Customer{
     public int hashCode(){
 
         return Objects.hash(firstName, lastName, address);
+    }
+
+    // Можна для колекції використовувати просто sort
+
+    @Override
+    public int compareTo(Customer other) {
+        return this.firstName.compareTo(other.firstName);
     }
 }
