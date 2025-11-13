@@ -3,10 +3,18 @@
  */
 package lab;
 
+import lab.config.AppConfig;
+import lab.persistence.PersistenceManager;
+import lab.exceptions.DataSerializationException;
+// import ua.university.repository.GenericRepository;
+import lab.serializer.DataSerializer;
+import lab.serializer.JsonDataSerializer;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -18,6 +26,13 @@ import lab.repository.IdentityExtractor;
 import lab.repository.RestaurantRepository;
 import lab.utils.CuisineType;
 import lab.utils.OrderStatus;
+
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 public class App {
     public String getGreeting() {
@@ -65,33 +80,13 @@ public class App {
         repo.add(delivery2);
         repo.add(delivery3);
 
-        // Порівняння паралельної та послідовної обробки
-        long start = System.currentTimeMillis();
-        List<Integer> res_posl = repo.getAll().stream()
-                .map(Delivery::getOrder)
-                .map(order -> Arrays.asList(order.getItems()))
-
-                .map(item -> item.stream().filter(Objects::nonNull).map(MenuItem::getPrice).reduce(0, Integer::sum))
-                .collect(Collectors.toList());
-        System.out.println("Sequential: " + (System.currentTimeMillis() - start) + "ms");
-
-        start = System.currentTimeMillis();
-        List<Integer> res_paralel = repo.getAll().parallelStream()
-                .map(Delivery::getOrder)
-                .map(order -> Arrays.asList(order.getItems()))
-                .map(item -> item.stream()
-                        .filter(Objects::nonNull)
-                        .map(MenuItem::getPrice)
-                        .reduce(0, Integer::sum))
-                .collect(Collectors.toList());
-        System.out.println("Parallel: " + (System.currentTimeMillis() - start) + "ms");
 
         CustomerRepository rep_cus = new CustomerRepository();
         rep_cus.add(customer1);
         rep_cus.add(customer2);
         rep_cus.add(customer3);
 
-        System.out.println(rep_cus.findByAddress("dalkdkajdlkj"));
+        // System.out.println(rep_cus.findByAddress("dalkdkajdlkj"));
 
         Restaurant rest1 = new Restaurant("skjdfskhf", CuisineType.AMERICAN, "skjdhfjksdhf");
         Restaurant rest2 = new Restaurant("skjfjhkfjhdfskhf", CuisineType.CHINESE, "skjdhfjkfnfhjflhjfkljhlkhjfghjfsdhf");
@@ -102,6 +97,22 @@ public class App {
         rest_rep.add(rest2);
         rest_rep.add(rest3);
 
-        rest_rep.showAllRestaurants();
+        // rest_rep.showAllRestaurants();
+
+
+        AppConfig config = new AppConfig();
+        PersistenceManager manager = new PersistenceManager(config);
+
+        System.out.println("\n" + "=".repeat(70) + "\n");
+
+        DataSerializer<Restaurant> ser = new JsonDataSerializer<>();
+
+        try {
+            ser.serialize(List.of(rest1), "data.json");
+        } catch (DataSerializationException e) {
+            System.err.println("Failed to serialize restaurants: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 }
