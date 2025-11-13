@@ -111,7 +111,17 @@ public class App {
             ser.serialize(List.of(rest1), "data.json");
         } catch (DataSerializationException e) {
             System.err.println("Failed to serialize restaurants: " + e.getMessage());
-            e.printStackTrace();
+            
+        }
+
+        try {
+            manager.save(repo.getAll(), "delivery", Delivery.class, "JSON");
+            manager.save(rep_cus.getAll(), "customer", Customer.class, "YAML");
+
+            System.out.println(manager.load("Customer", Customer.class, "YAML"));
+        } catch (DataSerializationException e) {
+            System.err.println("Failed to save data: " + e.getMessage());
+            
         }
 
     }
