@@ -4,11 +4,75 @@
 package lab;
 
 import org.junit.jupiter.api.Test;
+
+
+import lab.parser.CustomerFileParser;
+import lab.utils.DelieveryUtils;
+import lab.utils.RestaurantUtils;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import lab.exceptions.CustomerException;
+import lab.models.Customer;
+import java.util.List;
 class AppTest {
     @Test void appHasAGreeting() {
         App classUnderTest = new App();
         assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    }
+
+    @Test
+    void trueParsing(){
+        
+        Customer obj = CustomerFileParser.parseCustomerFromLine("John,Smith,oleksandra_sherbanuka");
+        Customer obj2 = new Customer("John", "Smith", "oleksandra_sherbanuka");
+
+        assertEquals(obj, obj2);
+    }
+
+    @Test
+    void equalCount(){
+        List<String> customersString = new ArrayList<>();
+
+        customersString.add("John,Smith,oleksandra_sherbanuka");
+        customersString.add("jane,Dowh,sadova");
+
+        List<Customer> customers = CustomerFileParser.parseFromCSV(customersString);
+        
+        assertNotEquals(customers.size(), 2);
+    }
+
+    @Test
+    void checkNumberColums(){
+        
+        assertThrows(CustomerException.class, ()->{CustomerFileParser.parseCustomerFromLine("Jane,Dowh");});
+    }
+
+    // Testing Utils
+
+
+    @Test
+    void DelieveryUtilsValidDeliveryTime(){
+        LocalDateTime time = LocalDateTime.of(2026, 9, 15, 20, 15);
+
+        assertTrue(DelieveryUtils.validDelieveryTime(time));
+    }
+
+    @Test
+    void DelieveryUtilsValidDeliveryPerson(){
+        String person = "Petro Krokovich";
+
+        assertTrue(DelieveryUtils.validDelieveryPerson(person));
+    }
+
+    @Test
+    void RestaurantUtilsValidLocation(){
+
+        String location= "";
+
+        assertFalse(RestaurantUtils.validLocation(location));
     }
 }

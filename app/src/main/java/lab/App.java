@@ -5,8 +5,17 @@ package lab;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import lab.models.*;
+import lab.repository.CustomerRepository;
+import lab.repository.DeliveryRepository;
+import lab.repository.GenericRepository;
+import lab.repository.IdentityExtractor;
+import lab.repository.RestaurantRepository;
 import lab.utils.CuisineType;
 import lab.utils.OrderStatus;
 
@@ -16,28 +25,83 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Restaurant rest1 = new Restaurant("sfsfnsdnf", CuisineType.AMERICAN, "somewhere");
-        System.out.println(rest1);
 
-        System.out.println("\n");
-        System.out.println(rest1.showCuisine());
-        System.out.println("\n");
+        Customer customer1;
+        Customer customer2;
+        Customer customer3;
+        MenuItem pizza;
+        MenuItem sushi;
+        MenuItem cola;
+        Order order1;
+        Order order2;
+        Order order3;
+        Delivery delivery1;
+        Delivery delivery2;
+        Delivery delivery3;
+        DeliveryRepository repo;
 
-        MenuItem[] items = new MenuItem[] {new MenuItem("borsh", 120, "hot dish"), new MenuItem("potato", 500, "hot dish")};
-        Customer customer1 = new Customer("Asjdaskjdh", "Dgjdjf", "shfkjsfhkjshf");
-        Order order1 = new Order(customer1, items, LocalDate.of(2025, 9, 30), OrderStatus.CONFIRMED);
-        System.out.println(order1);
+        customer1 = new Customer("Akdhakjsdh", "Fsjkfnkjsn", "dalkdkajdlkj");
+        customer2 = new Customer("Akdhdsjfsdfakjsdh", "Fsjkfnasndnmadbmnkjsn", "dalkdkajdlasdmansdmnaskj");
+        customer3 = new Customer("Akdhasndmasndmasndmsandkjsdh", "Fsjansdfsafnsanfsadnfkfnkjsn",
+                "dalkdnfnsa,mfns,dafnasnkajdlkj");
 
-        System.out.println("\n");
-        System.out.println(order1.checkStatus());
+        pizza = new MenuItem("Pizza", 100, "Main");
+        sushi = new MenuItem("Sushi", 150, "Main");
+        cola = new MenuItem("Cola", 500, "Drink");
 
-        System.out.println("\n");
+        order1 = new Order(customer1, new MenuItem[] { pizza, cola },
+                LocalDate.now().plusDays(1), OrderStatus.DELIVERED);
+        order2 = new Order(customer2, new MenuItem[] { pizza, cola },
+                LocalDate.now().plusDays(2), OrderStatus.DELIVERED);
+        order3 = new Order(customer3, new MenuItem[] { sushi },
+                LocalDate.now().plusDays(3), OrderStatus.PENDING);
 
-        CustomerRecord customer2 = new CustomerRecord("Kiril", "Kravtsov", "asjdasdj");
-        DeliveryRecord deliver1 = new DeliveryRecord(order1, "Avovus Bobus", LocalDateTime.of(2026, 9, 15, 20, 15));
+        delivery1 = new Delivery(order1, "John Dowhe", LocalDateTime.now().plusDays(1), 1);
+        delivery2 = new Delivery(order2, "John Dowhe", LocalDateTime.now().plusDays(2), 2);
+        delivery3 = new Delivery(order3, "Jane Dowhe", LocalDateTime.now().plusDays(3), 3);
 
-        System.out.println(customer2);
-        System.out.println("\n");
-        System.out.println(deliver1);
+        repo = new DeliveryRepository();
+        repo.add(delivery1);
+        repo.add(delivery2);
+        repo.add(delivery3);
+
+        // Порівняння паралельної та послідовної обробки
+        long start = System.currentTimeMillis();
+        List<Integer> res_posl = repo.getAll().stream()
+                .map(Delivery::getOrder)
+                .map(order -> Arrays.asList(order.getItems()))
+
+                .map(item -> item.stream().filter(Objects::nonNull).map(MenuItem::getPrice).reduce(0, Integer::sum))
+                .collect(Collectors.toList());
+        System.out.println("Sequential: " + (System.currentTimeMillis() - start) + "ms");
+
+        start = System.currentTimeMillis();
+        List<Integer> res_paralel = repo.getAll().parallelStream()
+                .map(Delivery::getOrder)
+                .map(order -> Arrays.asList(order.getItems()))
+                .map(item -> item.stream()
+                        .filter(Objects::nonNull)
+                        .map(MenuItem::getPrice)
+                        .reduce(0, Integer::sum))
+                .collect(Collectors.toList());
+        System.out.println("Parallel: " + (System.currentTimeMillis() - start) + "ms");
+
+        CustomerRepository rep_cus = new CustomerRepository();
+        rep_cus.add(customer1);
+        rep_cus.add(customer2);
+        rep_cus.add(customer3);
+
+        System.out.println(rep_cus.findByAddress("dalkdkajdlkj"));
+
+        Restaurant rest1 = new Restaurant("skjdfskhf", CuisineType.AMERICAN, "skjdhfjksdhf");
+        Restaurant rest2 = new Restaurant("skjfjhkfjhdfskhf", CuisineType.CHINESE, "skjdhfjkfnfhjflhjfkljhlkhjfghjfsdhf");
+        Restaurant rest3 = new Restaurant("skjdfskdhfgjfhghjfhf", CuisineType.ITALIAN, "skjdhfjksdnnghf");
+        
+        RestaurantRepository rest_rep = new RestaurantRepository();
+        rest_rep.add(rest1);
+        rest_rep.add(rest2);
+        rest_rep.add(rest3);
+
+        rest_rep.showAllRestaurants();
     }
 }

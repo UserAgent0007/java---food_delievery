@@ -23,6 +23,13 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation("org.slf4j:slf4j-api:2.0.13")
+    implementation("org.slf4j:slf4j-simple:2.0.13")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.18.0")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.0")
+
+    implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

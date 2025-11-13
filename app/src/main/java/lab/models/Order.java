@@ -106,6 +106,10 @@ public class Order {
         return this.numberItems;
     }
 
+    public void incrementNumberItems(){
+        this.numberItems += 1;
+    }
+
     private void setNumberItems(int n){
 
         this.numberItems = n;

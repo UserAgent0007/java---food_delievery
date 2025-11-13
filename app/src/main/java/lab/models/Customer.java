@@ -2,10 +2,24 @@ package lab.models;
 
 import java.util.Objects;
 
-import lab.utils.CustomerUtils;
 
-public class Customer {
+import lab.exceptions.CustomerException;
+import lab.utils.CustomerUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import lab.parser.CustomerFileParser;
+
+public class Customer implements Comparable<Customer>{
     
+    private static final Logger logger = LoggerFactory.getLogger(Customer.class);
+
     private String firstName;
     private String lastName;
     private String address;
@@ -14,9 +28,20 @@ public class Customer {
 
     public Customer(String firstName, String lastName, String address){
 
-        setAddress(address);
-        setFirstName(firstName);
-        setLastName(lastName);
+        try{
+            setAddress(address);
+            setFirstName(firstName);
+            setLastName(lastName);
+
+            logger.info("Object customer created succsesfully");
+        }
+        catch (CustomerException d){
+            this.address = "undefiend";
+            this.firstName = "undefiend";
+            this.lastName = "undefiend";
+            logger.error("Object is not created due to bad input");
+            throw new CustomerException("bad input for parameters");
+        }
     }
 
     public String getFirstName(){
@@ -24,7 +49,7 @@ public class Customer {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) throws CustomerException{
 
         if (CustomerUtils.validFirstName(firstName)){
 
@@ -33,7 +58,8 @@ public class Customer {
 
         else{
 
-            throw new IllegalArgumentException("bad input for Customer's FirstName");
+            
+            throw new CustomerException("bad input for Customer's FirstName");
         }
     }
 
@@ -86,6 +112,28 @@ public class Customer {
         }
     }
 
+    public static List<Customer> createObjectsFromCSV(String filePath){
+
+        List<Customer> customers = new ArrayList<>();
+        try(BufferedReader br = new BufferedReader(new FileReader("input.txt"))){
+            
+            List<String> lines = new ArrayList<>();
+            String line;
+
+
+        
+            while ((line = br.readLine()) != null) {
+                lines.add(line); // Додаємо зчитаний рядок у наш список
+            }
+            return CustomerFileParser.parseFromCSV(lines);
+
+        }catch(IOException ex){
+            logger.warn("File not found: {0}");
+            return customers;
+        }
+        
+    }
+
     @Override
     public String toString(){
 
@@ -113,5 +161,12 @@ public class Customer {
     public int hashCode(){
 
         return Objects.hash(firstName, lastName, address);
+    }
+
+    // Можна для колекції використовувати просто sort
+
+    @Override
+    public int compareTo(Customer other) {
+        return this.firstName.compareTo(other.firstName);
     }
 }
