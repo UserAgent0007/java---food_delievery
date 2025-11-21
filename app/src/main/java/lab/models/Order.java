@@ -6,19 +6,37 @@ import java.time.LocalDate;
 
 import java.util.Objects;
 
+import jakarta.validation.Valid;
 import lab.utils.CustomerUtils;
 import lab.utils.OrderStatus;
 import lab.utils.OrderUtils;
 
+import jakarta.validation.constraints.*;
+import lab.utils.ValidationUtils;
+import lab.validation.ValidYear;
+
 public class Order {
+    @Valid
     private Customer customer = new Customer();
+    
+    @Valid
     private MenuItem[] items = new MenuItem[10];
+
+    @Positive(message = "Number Items must be positive")
     private int numberItems;
+
+    @ValidYear (message="Year must be <= current year + 2")
     private LocalDate orderDate;
 
     private OrderStatus status;
 
     public Order(){}
+
+    public static Order createValidOrder (Customer customer, MenuItem[] items, LocalDate orderDate, OrderStatus status){
+        Order ord = new Order (customer, items, orderDate, status);
+        ValidationUtils.validate(ord);
+        return ord;
+    }
 
     public Order(Customer customer, MenuItem[] items, LocalDate orderDate, OrderStatus status){
 

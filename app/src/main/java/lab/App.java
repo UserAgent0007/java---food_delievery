@@ -4,6 +4,7 @@
 package lab;
 
 import lab.config.AppConfig;
+import lab.exceptions.InvalidDataException;
 import lab.persistence.PersistenceManager;
 import lab.exceptions.DataSerializationException;
 // import ua.university.repository.GenericRepository;
@@ -60,69 +61,90 @@ public class App {
         customer3 = new Customer("Akdhasndmasndmasndmsandkjsdh", "Fsjansdfsafnsanfsadnfkfnkjsn",
                 "dalkdnfnsa,mfns,dafnasnkajdlkj");
 
-        pizza = new MenuItem("Pizza", 100, "Main");
-        sushi = new MenuItem("Sushi", 150, "Main");
-        cola = new MenuItem("Cola", 500, "Drink");
+        pizza = new MenuItem("Pizza", 150, "Main");
+        sushi = new MenuItem("Sushi", 550, "Main");
+        cola = new MenuItem("Cola", 130, "Drink");
 
-        order1 = new Order(customer1, new MenuItem[] { pizza, cola },
-                LocalDate.now().plusDays(1), OrderStatus.DELIVERED);
-        order2 = new Order(customer2, new MenuItem[] { pizza, cola },
-                LocalDate.now().plusDays(2), OrderStatus.DELIVERED);
-        order3 = new Order(customer3, new MenuItem[] { sushi },
-                LocalDate.now().plusDays(3), OrderStatus.PENDING);
-
-        delivery1 = new Delivery(order1, "John Dowhe", LocalDateTime.now().plusDays(1), 1);
-        delivery2 = new Delivery(order2, "John Dowhe", LocalDateTime.now().plusDays(2), 2);
-        delivery3 = new Delivery(order3, "Jane Dowhe", LocalDateTime.now().plusDays(3), 3);
-
-        repo = new DeliveryRepository();
-        repo.add(delivery1);
-        repo.add(delivery2);
-        repo.add(delivery3);
-
-
-        CustomerRepository rep_cus = new CustomerRepository();
-        rep_cus.add(customer1);
-        rep_cus.add(customer2);
-        rep_cus.add(customer3);
-
-        // System.out.println(rep_cus.findByAddress("dalkdkajdlkj"));
-
-        Restaurant rest1 = new Restaurant("skjdfskhf", CuisineType.AMERICAN, "skjdhfjksdhf");
-        Restaurant rest2 = new Restaurant("skjfjhkfjhdfskhf", CuisineType.CHINESE, "skjdhfjkfnfhjflhjfkljhlkhjfghjfsdhf");
-        Restaurant rest3 = new Restaurant("skjdfskdhfgjfhghjfhf", CuisineType.ITALIAN, "skjdhfjksdnnghf");
-        
-        RestaurantRepository rest_rep = new RestaurantRepository();
-        rest_rep.add(rest1);
-        rest_rep.add(rest2);
-        rest_rep.add(rest3);
-
-        // rest_rep.showAllRestaurants();
-
-
-        AppConfig config = new AppConfig();
-        PersistenceManager manager = new PersistenceManager(config);
-
-        System.out.println("\n" + "=".repeat(70) + "\n");
-
-        DataSerializer<Restaurant> ser = new JsonDataSerializer<>();
-
-        try {
-            ser.serialize(List.of(rest1), "data.json");
-        } catch (DataSerializationException e) {
-            System.err.println("Failed to serialize restaurants: " + e.getMessage());
-            
+        try{
+            Order ord = Order.createValidOrder(customer1, new MenuItem[] { pizza, cola },
+                    LocalDate.now().plusDays(1), OrderStatus.DELIVERED);;
+        }catch(InvalidDataException ex){
+            System.err.println(ex.getMessage());
         }
 
-        try {
-            manager.save(repo.getAll(), "delivery", Delivery.class, "JSON");
-            manager.save(rep_cus.getAll(), "customer", Customer.class, "YAML");
-
-            System.out.println(manager.load("Customer", Customer.class, "YAML"));
-        } catch (DataSerializationException e) {
-            System.err.println("Failed to save data: " + e.getMessage());
-            
+        try{
+            Order ord2 = Order.createValidOrder(customer2, new MenuItem[] { sushi },
+                    LocalDate.now().plusDays(1), OrderStatus.DELIVERED);;
+        }catch(InvalidDataException ex){
+            System.err.println(ex.getMessage());
         }
+
+        try{
+            Order ord3 = Order.createValidOrder(customer3, new MenuItem[] { sushi },
+                    LocalDate.now().plusYears(4), OrderStatus.DELIVERED);;
+        }catch(InvalidDataException ex){
+            System.err.println(ex.getMessage());
+        }
+
+//        order1 = new Order(customer1, new MenuItem[] { pizza, cola },
+//                LocalDate.now().plusDays(1), OrderStatus.DELIVERED);
+//        order2 = new Order(customer2, new MenuItem[] { pizza, cola },
+//                LocalDate.now().plusDays(2), OrderStatus.DELIVERED);
+//        order3 = new Order(customer3, new MenuItem[] { sushi },
+//                LocalDate.now().plusDays(3), OrderStatus.PENDING);
+//
+//        delivery1 = new Delivery(order1, "John Dowhe", LocalDateTime.now().plusDays(1), 1);
+//        delivery2 = new Delivery(order2, "John Dowhe", LocalDateTime.now().plusDays(2), 2);
+//        delivery3 = new Delivery(order3, "Jane Dowhe", LocalDateTime.now().plusDays(3), 3);
+//
+//        repo = new DeliveryRepository();
+//        repo.add(delivery1);
+//        repo.add(delivery2);
+//        repo.add(delivery3);
+//
+//
+//        CustomerRepository rep_cus = new CustomerRepository();
+//        rep_cus.add(customer1);
+//        rep_cus.add(customer2);
+//        rep_cus.add(customer3);
+//
+//        // System.out.println(rep_cus.findByAddress("dalkdkajdlkj"));
+//
+//        Restaurant rest1 = new Restaurant("skjdfskhf", CuisineType.AMERICAN, "skjdhfjksdhf");
+//        Restaurant rest2 = new Restaurant("skjfjhkfjhdfskhf", CuisineType.CHINESE, "skjdhfjkfnfhjflhjfkljhlkhjfghjfsdhf");
+//        Restaurant rest3 = new Restaurant("skjdfskdhfgjfhghjfhf", CuisineType.ITALIAN, "skjdhfjksdnnghf");
+//
+//        RestaurantRepository rest_rep = new RestaurantRepository();
+//        rest_rep.add(rest1);
+//        rest_rep.add(rest2);
+//        rest_rep.add(rest3);
+//
+//        // rest_rep.showAllRestaurants();
+//
+//
+//        AppConfig config = new AppConfig();
+//        PersistenceManager manager = new PersistenceManager(config);
+//
+//        System.out.println("\n" + "=".repeat(70) + "\n");
+//
+//        DataSerializer<Restaurant> ser = new JsonDataSerializer<>();
+//
+//        try {
+//            ser.serialize(List.of(rest1), "data.json");
+//        } catch (DataSerializationException e) {
+//            System.err.println("Failed to serialize restaurants: " + e.getMessage());
+//
+//        }
+//
+//        try {
+//            manager.save(repo.getAll(), "delivery", Delivery.class, "JSON");
+//            manager.save(rep_cus.getAll(), "customer", Customer.class, "YAML");
+//
+//            System.out.println(manager.load("Customer", Customer.class, "YAML"));
+//        } catch (DataSerializationException e) {
+//            System.err.println("Failed to save data: " + e.getMessage());
+//
+//        }
 
     }
 }

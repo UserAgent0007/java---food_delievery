@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.logging.Logger;
 // import java.util.logging.Level;
 
+import lab.exceptions.AlreadyExistsException;
+import lab.exceptions.InvalidDataException;
+
 public class GenericRepository<T> {
     private static final Logger logger = Logger.getLogger(GenericRepository.class.getName());
 
@@ -20,14 +23,14 @@ public class GenericRepository<T> {
 
     public boolean add(T item) {
         if (item == null) {
-            logger.warning("Attempted to add null " + entityType);
-            return false;
+            throw new InvalidDataException(entityType + " cannot be null");
         }
 
         String identity = identityExtractor.extractIdentity(item);
         if (findByIdentity(identity).isPresent()) {
-            logger.warning("Cannot add " + entityType + " - already exists with identity: " + identity);
-            return false;
+            String errorMsg = String.format("%s already exists with identity: %s", entityType, identity);
+            logger.warning(errorMsg);
+            throw new AlreadyExistsException(errorMsg);
         }
 
         boolean added = items.add(item);

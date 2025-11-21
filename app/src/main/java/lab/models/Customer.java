@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import lab.exceptions.CustomerException;
 import lab.utils.CustomerUtils;
+import lab.utils.ValidationUtils;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -15,14 +17,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lab.parser.CustomerFileParser;
+import jakarta.validation.constraints.*;
+import lab.validation.*;
 
 public class Customer implements Comparable<Customer>{
     
     private static final Logger logger = LoggerFactory.getLogger(Customer.class);
 
+    @NotBlank
+    @Pattern(
+        regexp = "^[A-Z][a-z]+$",
+        message = "Name must be like this pattern"
+    )
     private String firstName;
+
+    @NotBlank
+    @Pattern(
+        regexp = "^[A-Z][a-z]+$",
+        message = "Name must be like this pattern"
+    )
     private String lastName;
+
+    @NotBlank
     private String address;
+
+    public static Customer createValidCustomer(String firstName, String lastName, String address){
+        Customer new_c = new Customer();
+        ValidationUtils.validate(new_c);
+        return new_c;
+    }
     
     public Customer (){}
 

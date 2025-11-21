@@ -2,13 +2,29 @@ package lab.models;
 
 import java.util.Objects;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lab.utils.MenuItemUtils;
+import lab.utils.ValidationUtils;
 
 public class MenuItem {
 
+    @NotBlank(message = "name item must be stated")
     private String name;
+
+    @Min(120)
+    @DecimalMax(value = "500.00", message = "Price too high")
     private int price;
+
+    @NotBlank(message = "Category must be stated")
     private String category;
+
+    public static MenuItem createValidMenuItem(String name, int price, String category){
+        MenuItem item = new MenuItem(name, price, category);
+        ValidationUtils.validate(item);
+        return item;
+    }
 
     public MenuItem(){}
 
