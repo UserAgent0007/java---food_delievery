@@ -1,0 +1,296 @@
+[
+  {
+    "customer": {
+      "firstName": "Ivan",
+      "lastName": "Petrenko",
+      "address": "City1, Street 2"
+    },
+    "items": [
+      { "name": "Item1_1", "category": "DRINK", "price": 130.0 },
+      { "name": "Item1_2", "category": "DESSERT", "price": 135.0 },
+      { "name": "Item1_3", "category": "SALAD", "price": 140.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2025, 12, 17],
+    "orderStatus": "CONFIRMED"
+  },
+  {
+    "customer": {
+      "firstName": "Olena",
+      "lastName": "Kovalenko",
+      "address": "City2, Street 3"
+    },
+    "items": [
+      { "name": "Item2_1", "category": "DESSERT", "price": 135.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2025, 12, 20],
+    "orderStatus": "PREPARING"
+  },
+  {
+    "customer": {
+      "firstName": "Andrii",
+      "lastName": "Melnyk",
+      "address": "City3, Street 4"
+    },
+    "items": [
+      { "name": "Item3_1", "category": "SALAD", "price": 140.0 },
+      { "name": "Item3_2", "category": "MAIN", "price": 145.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2025, 12, 23],
+    "orderStatus": "DELIVERED"
+  },
+  {
+    "customer": {
+      "firstName": "Oleh",
+      "lastName": "Bondar",
+      "address": "City4, Street 5"
+    },
+    "items": [
+      { "name": "Item4_1", "category": "MAIN", "price": 145.0 },
+      { "name": "Item4_2", "category": "SIDE", "price": 150.0 },
+      { "name": "Item4_3", "category": "PIZZA", "price": 155.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2025, 12, 26],
+    "orderStatus": "CANCELED"
+  },
+  {
+    "customer": {
+      "firstName": "Svitlana",
+      "lastName": "Ruda",
+      "address": "City5, Street 6"
+    },
+    "items": [
+      { "name": "Item5_1", "category": "SIDE", "price": 150.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2025, 12, 29],
+    "orderStatus": "PENDING"
+  },
+  {
+    "customer": {
+      "firstName": "Nazar",
+      "lastName": "Shevchuk",
+      "address": "City6, Street 7"
+    },
+    "items": [
+      { "name": "Item6_1", "category": "PIZZA", "price": 155.0 },
+      { "name": "Item6_2", "category": "DRINK", "price": 160.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 1, 1],
+    "orderStatus": "CONFIRMED"
+  },
+  {
+    "customer": {
+      "firstName": "Maria",
+      "lastName": "Boiko",
+      "address": "City7, Street 8"
+    },
+    "items": [
+      { "name": "Item7_1", "category": "DRINK", "price": 160.0 },
+      { "name": "Item7_2", "category": "DESSERT", "price": 165.0 },
+      { "name": "Item7_3", "category": "SALAD", "price": 170.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2026, 1, 4],
+    "orderStatus": "PREPARING"
+  },
+  {
+    "customer": {
+      "firstName": "Taras",
+      "lastName": "Lysenko",
+      "address": "City8, Street 9"
+    },
+    "items": [
+      { "name": "Item8_1", "category": "DESSERT", "price": 165.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2026, 1, 7],
+    "orderStatus": "DELIVERED"
+  },
+  {
+    "customer": {
+      "firstName": "Iryna",
+      "lastName": "Tkachenko",
+      "address": "City9, Street 10"
+    },
+    "items": [
+      { "name": "Item9_1", "category": "SALAD", "price": 170.0 },
+      { "name": "Item9_2", "category": "MAIN", "price": 175.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 1, 10],
+    "orderStatus": "CANCELED"
+  },
+  {
+    "customer": {
+      "firstName": "Petro",
+      "lastName": "Kravets",
+      "address": "City10, Street 11"
+    },
+    "items": [
+      { "name": "Item10_1", "category": "MAIN", "price": 175.0 },
+      { "name": "Item10_2", "category": "SIDE", "price": 180.0 },
+      { "name": "Item10_3", "category": "PIZZA", "price": 185.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2026, 1, 13],
+    "orderStatus": "PENDING"
+  },
+  {
+    "customer": {
+      "firstName": "Kateryna",
+      "lastName": "Soroka",
+      "address": "City11, Street 12"
+    },
+    "items": [
+      { "name": "Item11_1", "category": "DRINK", "price": 180.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2026, 1, 16],
+    "orderStatus": "CONFIRMED"
+  },
+  {
+    "customer": {
+      "firstName": "Bohdan",
+      "lastName": "Hnatyuk",
+      "address": "City12, Street 13"
+    },
+    "items": [
+      { "name": "Item12_1", "category": "DESSERT", "price": 185.0 },
+      { "name": "Item12_2", "category": "SALAD", "price": 190.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 1, 19],
+    "orderStatus": "PREPARING"
+  },
+  {
+    "customer": {
+      "firstName": "Yulia",
+      "lastName": "Kovalchuk",
+      "address": "City13, Street 14"
+    },
+    "items": [
+      { "name": "Item13_1", "category": "SALAD", "price": 190.0 },
+      { "name": "Item13_2", "category": "MAIN", "price": 195.0 },
+      { "name": "Item13_3", "category": "SIDE", "price": 200.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2026, 1, 22],
+    "orderStatus": "DELIVERED"
+  },
+  {
+    "customer": {
+      "firstName": "Volodymyr",
+      "lastName": "Moroz",
+      "address": "City14, Street 15"
+    },
+    "items": [
+      { "name": "Item14_1", "category": "MAIN", "price": 195.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2026, 1, 25],
+    "orderStatus": "CANCELED"
+  },
+  {
+    "customer": {
+      "firstName": "Daria",
+      "lastName": "Savchenko",
+      "address": "City15, Street 16"
+    },
+    "items": [
+      { "name": "Item15_1", "category": "SIDE", "price": 200.0 },
+      { "name": "Item15_2", "category": "PIZZA", "price": 205.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 1, 28],
+    "orderStatus": "PENDING"
+  },
+  {
+    "customer": {
+      "firstName": "Maksym",
+      "lastName": "Chernenko",
+      "address": "City16, Street 17"
+    },
+    "items": [
+      { "name": "Item16_1", "category": "PIZZA", "price": 205.0 },
+      { "name": "Item16_2", "category": "DRINK", "price": 210.0 },
+      { "name": "Item16_3", "category": "DESSERT", "price": 215.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2026, 1, 31],
+    "orderStatus": "CONFIRMED"
+  },
+  {
+    "customer": {
+      "firstName": "Oksana",
+      "lastName": "Levchenko",
+      "address": "City17, Street 18"
+    },
+    "items": [
+      { "name": "Item17_1", "category": "DRINK", "price": 210.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2026, 2, 3],
+    "orderStatus": "PREPARING"
+  },
+  {
+    "customer": {
+      "firstName": "Roman",
+      "lastName": "Klymenko",
+      "address": "City18, Street 19"
+    },
+    "items": [
+      { "name": "Item18_1", "category": "DESSERT", "price": 215.0 },
+      { "name": "Item18_2", "category": "SALAD", "price": 220.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 2, 6],
+    "orderStatus": "DELIVERED"
+  },
+  {
+    "customer": {
+      "firstName": "Halyna",
+      "lastName": "Marchenko",
+      "address": "City19, Street 20"
+    },
+    "items": [
+      { "name": "Item19_1", "category": "SALAD", "price": 220.0 },
+      { "name": "Item19_2", "category": "MAIN", "price": 225.0 },
+      { "name": "Item19_3", "category": "SIDE", "price": 230.0 }
+    ],
+    "numberItems": 3,
+    "orderDate": [2026, 2, 9],
+    "orderStatus": "CANCELED"
+  },
+  {
+    "customer": {
+      "firstName": "Denys",
+      "lastName": "Taran",
+      "address": "City20, Street 21"
+    },
+    "items": [
+      { "name": "Item20_1", "category": "MAIN", "price": 225.0 }
+    ],
+    "numberItems": 1,
+    "orderDate": [2026, 2, 12],
+    "orderStatus": "PENDING"
+  },
+  {
+    "customer": {
+      "firstName": "Ihor",
+      "lastName": "Zabolotny",
+      "address": "City21, Street 22"
+    },
+    "items": [
+      { "name": "Item21_1", "category": "SIDE", "price": 230.0 },
+      { "name": "Item21_2", "category": "PIZZA", "price": 235.0 }
+    ],
+    "numberItems": 2,
+    "orderDate": [2026, 2, 15],
+    "orderStatus": "CONFIRMED"
+  }
+]

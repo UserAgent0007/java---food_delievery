@@ -19,6 +19,8 @@ import java.util.List;
 import lab.parser.CustomerFileParser;
 import jakarta.validation.constraints.*;
 import lab.validation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Customer implements Comparable<Customer>{
     
@@ -191,5 +193,16 @@ public class Customer implements Comparable<Customer>{
     @Override
     public int compareTo(Customer other) {
         return this.firstName.compareTo(other.firstName);
+    }
+
+    @JsonCreator
+    public static Customer fromJson(
+        @JsonProperty("firstName") String firstName,
+        @JsonProperty("lastName") String lastName,
+        @JsonProperty("address") String address
+    ){
+        Customer customer = new Customer(firstName, lastName, address);
+        ValidationUtils.validate(customer);
+        return customer;
     }
 }

@@ -14,6 +14,9 @@ import lab.utils.OrderUtils;
 import jakarta.validation.constraints.*;
 import lab.utils.ValidationUtils;
 import lab.validation.ValidYear;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 public class Order {
     @Valid
@@ -87,6 +90,11 @@ public class Order {
 
     public MenuItem[] getItems(){
 
+        try {
+            Thread.sleep(Duration.of(100, ChronoUnit.MILLIS));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return this.items;
     }
 

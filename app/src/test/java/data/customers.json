@@ -1,0 +1,118 @@
+[
+  {
+    "firstName": "Ivan",
+    "lastName": "Petrenko",
+    "address": "City1, Street 1"
+  },
+  {
+    "firstName": "Olena",
+    "lastName": "Kovalenko",
+    "address": "City2, Street 2"
+  },
+  {
+    "firstName": "Andrii",
+    "lastName": "Melnyk",
+    "address": "City3, Street 3"
+  },
+  {
+    "firstName": "Oleh",
+    "lastName": "Bondar",
+    "address": "City4, Street 4"
+  },
+  {
+    "firstName": "Svitlana",
+    "lastName": "Ruda",
+    "address": "City5, Street 5"
+  },
+  {
+    "firstName": "Nazar",
+    "lastName": "Shevchenko",
+    "address": "City6, Street 6"
+  },
+  {
+    "firstName": "Maria",
+    "lastName": "Boiko",
+    "address": "City7, Street 7"
+  },
+  {
+    "firstName": "Taras",
+    "lastName": "Lysenko",
+    "address": "City8, Street 8"
+  },
+  {
+    "firstName": "Iryna",
+    "lastName": "Tkachenko",
+    "address": "City9, Street 9"
+  },
+  {
+    "firstName": "Petro",
+    "lastName": "Kravets",
+    "address": "City10, Street 10"
+  },
+  {
+    "firstName": "Kateryna",
+    "lastName": "Soroka",
+    "address": "City11, Street 11"
+  },
+  {
+    "firstName": "Bohdan",
+    "lastName": "Hnatyuk",
+    "address": "City12, Street 12"
+  },
+  {
+    "firstName": "Yulia",
+    "lastName": "Kovalchuk",
+    "address": "City13, Street 13"
+  },
+  {
+    "firstName": "Volodymyr",
+    "lastName": "Moroz",
+    "address": "City14, Street 14"
+  },
+  {
+    "firstName": "Daria",
+    "lastName": "Savchenko",
+    "address": "City15, Street 15"
+  },
+  {
+    "firstName": "Maksym",
+    "lastName": "Chernenko",
+    "address": "City16, Street 16"
+  },
+  {
+    "firstName": "Oksana",
+    "lastName": "Levchenko",
+    "address": "City17, Street 17"
+  },
+  {
+    "firstName": "Roman",
+    "lastName": "Klymenko",
+    "address": "City18, Street 18"
+  },
+  {
+    "firstName": "Halyna",
+    "lastName": "Marchenko",
+    "address": "City19, Street 19"
+  },
+  {
+    "firstName": "Denys",
+    "lastName": "Taran",
+    "address": "City20, Street 20"
+  },
+  {
+    "firstName": "Ihor",
+    "lastName": "Zabolotny",
+    "address": "City21, Street 21"
+  },
+  {
+    "firstName": "Larysa",
+    "lastName": "Myronenko",
+    "address": "City22, Street 22"
+  },
+  {
+    "firstName": "Stepan",
+    "lastName": "Danylko",
+    "address": "City23, Street 23"
+  }
+]
+

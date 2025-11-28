@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import lab.exceptions.AlreadyExistsException;
 import lab.exceptions.InvalidDataException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GenericRepository<T> {
     private static final Logger logger = Logger.getLogger(GenericRepository.class.getName());
@@ -15,13 +16,15 @@ public class GenericRepository<T> {
     private final String entityType;
 
     public GenericRepository(IdentityExtractor<T> identityExtractor, String entityType) {
-        this.items = new ArrayList<>();
+//        this.items = new ArrayList<>();
+        this.items = new CopyOnWriteArrayList<>();
         this.identityExtractor = identityExtractor;
         this.entityType = entityType;
-        logger.info("Created repository for " + entityType);
+//        logger.info("Created repository for " + entityType);
+        logger.info("Created thread-safe repository for " + entityType);
     }
 
-    public boolean add(T item) {
+    public synchronized boolean add(T item) {
         if (item == null) {
             throw new InvalidDataException(entityType + " cannot be null");
         }
@@ -40,13 +43,32 @@ public class GenericRepository<T> {
         return added;
     }
 
-    public boolean remove(T item) {
+    public int addAll(Collection<T> newItems) {
+        if (newItems == null || newItems.isEmpty()) {
+            return 0;
+        }
+
+        int addedCount = 0;
+        for (T item : newItems) {
+            try {
+                if (add(item)) {
+                    addedCount++;
+                }
+            } catch (AlreadyExistsException e) {
+                logger.config("Skipping duplicate: " + e.getMessage());
+            }
+        }
+        logger.info("Bulk added " + addedCount + "of " + newItems.size() + " items to " +  entityType);
+        return addedCount;
+    }
+
+    public synchronized boolean remove(T item) {
         if (item == null) {
             logger.warning("Attempted to remove null " + entityType);
             return false;
         }
 
-        boolean removed = items.remove(item); // Uses equals() internally
+        boolean removed = items.remove(item);
         if (removed) {
             logger.info("Removed " + entityType + ": " + identityExtractor.extractIdentity(item));
         } else {
@@ -55,15 +77,17 @@ public class GenericRepository<T> {
         return removed;
     }
 
-    public boolean removeByIdentity(String identity) {
+    public synchronized boolean removeByIdentity(String identity) {
         if (identity == null) {
             logger.warning("Attempted to remove " + entityType + " with null identity");
             return false;
         }
 
-        Optional<T> itemToRemove = items.stream()
-                .filter(item -> identity.equals(identityExtractor.extractIdentity(item)))
-                .findFirst();
+//        Optional<T> itemToRemove = items.stream()
+//                .filter(item -> identity.equals(identityExtractor.extractIdentity(item)))
+//                .findFirst();
+
+        Optional<T> itemToRemove = findByIdentityInternal(identity);
 
         if (itemToRemove.isPresent()) {
             boolean removed = items.remove(itemToRemove.get());
@@ -81,14 +105,14 @@ public class GenericRepository<T> {
      * Check if repository contains an item using equals()
      */
     public boolean contains(T item) {
-        return items.contains(item); // Uses equals() internally
+        return items.contains(item);
     }
 
     /**
      * Check if repository contains an item with given identity
      */
     public boolean containsIdentity(String identity) {
-        return findByIdentity(identity).isPresent();
+        return findByIdentityInternal(identity).isPresent();
     }
 
     /**
@@ -111,6 +135,12 @@ public class GenericRepository<T> {
         }
 
         return result;
+    }
+
+    private Optional<T> findByIdentityInternal(String identity) {
+        return items.stream()
+                .filter(item -> identity.equals(identityExtractor.extractIdentity(item)))
+                .findFirst();
     }
 
     public List<T> getAll() {
@@ -144,7 +174,7 @@ public class GenericRepository<T> {
         return items.isEmpty();
     }
 
-    public void clear() {
+    public synchronized void clear() {
         int sizeBefore = items.size();
         items.clear();
         logger.info("Cleared repository. Removed " + sizeBefore + " " + entityType + " items");
@@ -155,11 +185,12 @@ public class GenericRepository<T> {
      * @param asc
      */
 
-    public void sortByIdentity(boolean asc){
+    public synchronized void sortByIdentity(boolean asc){
 
-        items.sort(Comparator.comparing(identityExtractor::extractIdentity));
+        List<T> sorted = new ArrayList<>(items);
+        sorted.sort(Comparator.comparing(identityExtractor::extractIdentity));
         if (!asc){
-            Collections.reverse(items);
+            Collections.reverse(sorted);
             
             logger.info("Sorted " + entityType +" by identity in descending order");
         }
@@ -167,11 +198,14 @@ public class GenericRepository<T> {
         else{
             logger.info("Sorted " + entityType +" by identity in ascending order");
         }
+
+        items.clear();
+        items.addAll(sorted);
         
     }
 
     List<T> getItemsForTesting() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public void addList(List<T> list1){
