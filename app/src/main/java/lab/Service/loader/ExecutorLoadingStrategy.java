@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class ExecutorLoadingStrategy implements LoadingStrategy {
+public class ExecutorLoadingStrategy implements LoadingStrategy, LoadingStrategyNew {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorLoadingStrategy.class);
 
     private final int threadPoolSize;
@@ -25,6 +25,33 @@ public class ExecutorLoadingStrategy implements LoadingStrategy {
 
     public ExecutorLoadingStrategy() {
         this(4);
+    }
+
+    @Override
+    public LoadResult load(DeliveryRepository deliveryRepository, RestaurantRepository restaurantRepository, DataLoader dataLoader) {
+        logger.info("Starting loading with ExecutorService (pool size: {})...", threadPoolSize);
+
+        long startTime = System.currentTimeMillis();
+        ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
+
+        try {
+            CompletableFuture<Integer> deliveryFuture = CompletableFuture
+                    .supplyAsync(() -> loadEntity(dataLoader, lab.models.Delivery.class, deliveryRepository), executor);
+
+            CompletableFuture<Integer> restaurantFuture = CompletableFuture
+                    .supplyAsync(() -> loadEntity(dataLoader, lab.models.Restaurant.class, restaurantRepository), executor);
+//            System.out.println(restaurantRepository);
+            long duration = System.currentTimeMillis() - startTime;
+            logger.info("ExecutorService loading completed in {} ms", duration);
+
+            return new LoadResult(
+                    deliveryFuture.join(),
+                    restaurantFuture.join(),
+                    duration
+            );
+        } finally {
+            shutdownExecutor(executor);
+        }
     }
 
     @Override
@@ -77,4 +104,6 @@ public class ExecutorLoadingStrategy implements LoadingStrategy {
             Thread.currentThread().interrupt();
         }
     }
+
+
 }

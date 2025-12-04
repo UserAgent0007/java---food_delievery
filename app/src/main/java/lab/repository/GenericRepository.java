@@ -214,4 +214,24 @@ public class GenericRepository<T> {
             this.add(elem);
         }
     }
+
+    public synchronized boolean update(T newItem) {
+        if (newItem == null) {
+            throw new InvalidDataException(entityType + " cannot be null");
+        }
+
+        String identity = identityExtractor.extractIdentity(newItem);
+        Optional<T> existingItem = findByIdentityInternal(identity);
+
+        if (existingItem.isEmpty()) {
+            logger.warning("Cannot update: {} not found with identity: " + entityType + identity);
+            return false;
+        }
+
+        items.remove(existingItem.get());
+        items.add(newItem);
+
+        logger.info("Updated " + entityType + ": " + identity);
+        return true;
+    }
 }

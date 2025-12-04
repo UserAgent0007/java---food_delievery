@@ -5,9 +5,14 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.0.0/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+//import org.gretty.GrettyExtension
+
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("war")
+    id("org.gretty") version "4.1.10"
 }
 
 repositories {
@@ -42,6 +47,13 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+//
+gretty {
+    httpPort = 8080
+    contextPath = "/api"
+    servletContainer = "tomcat10"   // або "jetty11" тощо
+}
+
 
 application {
     // Define the main class for the application.
@@ -51,4 +63,12 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.war {
+    archiveFileName.set("order-api.war")
+}
+
+repositories {
+    mavenCentral()
 }

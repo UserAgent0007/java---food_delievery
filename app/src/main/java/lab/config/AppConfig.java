@@ -92,7 +92,7 @@ public class AppConfig {
 
     
     public String getBaseDataPath() {
-        return getProperty("data.path.base", "./data");
+        return getProperty("data.path.base", "data");
     }
 
     

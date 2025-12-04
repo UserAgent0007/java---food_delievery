@@ -46,14 +46,17 @@ public abstract class AbstractDataSerializer<T> implements DataSerializer<T> {
 
         try {
             File file = new File(filePath);
+            System.out.println(filePath );
 
             
             if (!file.exists()) {
+                System.out.println("file does not exist");
                 logger.warn("File does not exist: {}. Returning empty list.", filePath);
                 return new ArrayList<>();
             }
 
             if (file.length() == 0) {
+                System.out.println("file is empty");
                 logger.warn("File is empty: {}. Returning empty list.", filePath);
                 return new ArrayList<>();
             }
@@ -61,8 +64,10 @@ public abstract class AbstractDataSerializer<T> implements DataSerializer<T> {
             
             JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, clazz);
             List<T> items = objectMapper.readValue(file, type);
+            System.out.println(items);
 
             if (items == null) {
+                System.out.println("items is null");
                 items = new ArrayList<>();
             }
 
@@ -73,6 +78,7 @@ public abstract class AbstractDataSerializer<T> implements DataSerializer<T> {
         } catch (IOException e) {
             String errorMsg = String.format("Failed to deserialize data from %s file: %s",
                     getFormat(), filePath);
+            System.out.println(errorMsg);
             throw new DataSerializationException(errorMsg, e);
         }
     }
@@ -106,6 +112,56 @@ public abstract class AbstractDataSerializer<T> implements DataSerializer<T> {
             if (created) {
                 logger.info("Created directory: {}", parentDir.getAbsolutePath());
             }
+        }
+    }
+
+    @Override
+    public String toString(T item) throws DataSerializationException {
+        if (item == null) {
+            throw new DataSerializationException("Cannot serialize null item");
+        }
+
+        try {
+            String result = objectMapper.writeValueAsString(item);
+            logger.debug("Serialized single item to {} string", getFormat());
+            return result;
+        } catch (IOException e) {
+            String errorMsg = String.format("Failed to serialize item to %s string", getFormat());
+            throw new DataSerializationException(errorMsg, e);
+        }
+    }
+
+    @Override
+    public String listToString(List<T> items) throws DataSerializationException {
+        if (items == null) {
+            throw new DataSerializationException("Cannot serialize null list");
+        }
+
+        try {
+            String result = objectMapper.writeValueAsString(items);
+            logger.debug("Serialized {} items to {} string", items.size(), getFormat());
+            return result;
+        } catch (IOException e) {
+            String errorMsg = String.format("Failed to serialize list to %s string", getFormat());
+            throw new DataSerializationException(errorMsg, e);
+        }
+    }
+
+    @Override
+    public T fromString(String str, Class<T> clazz) throws DataSerializationException {
+        if (str == null || str.trim().isEmpty()) {
+            throw new DataSerializationException("Cannot deserialize null or empty string");
+        }
+
+        validateClass(clazz);
+
+        try {
+            T result = objectMapper.readValue(str, clazz);
+            logger.debug("Deserialized {} item from {} string", clazz.getSimpleName(), getFormat());
+            return result;
+        } catch (IOException e) {
+            String errorMsg = String.format("Failed to deserialize from %s string", getFormat());
+            throw new DataSerializationException(errorMsg, e);
         }
     }
 }

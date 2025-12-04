@@ -45,6 +45,9 @@ public class DataLoader {
     public <T> int loadEntity(String entityType, Class<T> clazz, GenericRepository<T> repository)
             throws DataSerializationException {
         List<T> items = persistenceManager.load(entityType, clazz, format);
+        System.out.println(items);
+        System.out.println(clazz.getSimpleName());
+        System.out.println(entityType);
         return repository.addAll(items);
     }
 
@@ -58,6 +61,20 @@ public class DataLoader {
         return strategy.load(
                 customerRepository,
                 orderRepository,
+                this
+        );
+    }
+
+    public LoadResult load(
+            DeliveryRepository deliveryRepository,
+            RestaurantRepository restaurantRepository,
+            LoadingStrategyNew strategy) {
+
+        logger.info("Loading data using strategy: {}", strategy.getClass().getSimpleName());
+
+        return strategy.load(
+                deliveryRepository,
+                restaurantRepository,
                 this
         );
     }

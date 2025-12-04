@@ -99,9 +99,11 @@ public class PersistenceManager {
         String filePath = getFilePath(entityType, formatUpper);
 
         logger.info("Loading {} from {} file: {}", entityType, formatUpper, filePath);
+//        System.out.println(filePath);
 
         try {
             List<T> items = serializer.deserialize(filePath, clazz);
+//            System.out.println("Persistace manager\n" + items);
             logger.info("Successfully loaded {} items of type {}", items.size(), entityType);
             return items;
         } catch (DataSerializationException e) {
